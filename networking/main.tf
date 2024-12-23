@@ -32,7 +32,7 @@ resource "azurerm_public_ip" "safe_fw_pip" {
   name                = "safe-fw-public-ip"
   location            = azurerm_resource_group.network_rg.location
   resource_group_name = azurerm_resource_group.network_rg.name
-  allocation_method   = "Static"
+  allocation_method   = "Dynamic"
   sku                 = "Standard"
 }
 
@@ -42,7 +42,11 @@ resource "azurerm_subnet" "safe_fw" {
   resource_group_name  = azurerm_resource_group.network_rg.name
   virtual_network_name = azurerm_virtual_network.safe_vnet.name
   address_prefixes     = ["10.1.1.0/24"]
-}
+   private_ip_address        = "10.1.1.4"  # Set a static private IP from the subnet range
+    private_ip_address_allocation = "Dynamic"  # Optionally set to Static, default is Dynamic
+  }
+
+
 
 # Subnet for Private Endpoint in Hub 2
 resource "azurerm_subnet" "hub2_private_endpoint_subnet" {
